@@ -8,9 +8,11 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
+    
+    private static final int STORAGE_LIMIT = 10000;
 
+    private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size;
-    Resume[] storage = new Resume[10000];
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -33,7 +35,7 @@ public class ArrayStorage {
                     r.getUuid() + ", already present");
             return;
         }
-        if (size >= storage.length) {
+        if (size >= STORAGE_LIMIT) {
             System.out.println("Error occurred while trying to save Resume with uuid: " +
                     r.getUuid() + ", storage is full");
             return;
