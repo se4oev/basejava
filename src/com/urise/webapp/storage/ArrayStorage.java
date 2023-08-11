@@ -2,28 +2,12 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.Arrays;
-
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
-    }
-
-    public void update(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index < 0) {
-            System.out.println("Error occurred while trying to update Resume with uuid: " +
-                    r.getUuid() + ", not presented");
-            return;
-        }
-        storage[index] = r;
-    }
-
+    @Override
     public void save(Resume r) {
         if (getIndex(r.getUuid()) > 0) {
             System.out.println("Error occurred while trying to save Resume with uuid: " +
@@ -39,6 +23,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         size++;
     }
 
+    @Override
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index < 0) {
@@ -51,13 +36,7 @@ public class ArrayStorage extends AbstractArrayStorage {
         storage[size] = null;
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
-    }
-
+    @Override
     protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
