@@ -1,5 +1,8 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
+import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -24,27 +27,23 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public void update(Resume r) {
         int index = getIndex(r.getUuid());
-        if (index < 0) {
-            System.out.println("Error occurred while trying to update Resume with uuid: " +
-                    r.getUuid() + ", not presented");
-            return;
-        }
+
+        if (index < 0)
+            throw new NotExistStorageException(r.getUuid());
+
         storage[index] = r;
     }
 
     @Override
     public void save(Resume r) {
         int index = getIndex(r.getUuid());
-        if (index > 0) {
-            System.out.println("Error occurred while trying to save Resume with uuid: " +
-                    r.getUuid() + ", already present");
-            return;
-        }
-        if (size >= STORAGE_LIMIT) {
-            System.out.println("Error occurred while trying to save Resume with uuid: " +
-                    r.getUuid() + ", storage is full");
-            return;
-        }
+
+        if (index > 0)
+            throw new ExistStorageException(r.getUuid());
+
+        if (size >= STORAGE_LIMIT)
+            throw new StorageException("Storage overflow", r.getUuid());
+
         insertElement(r, index);
         size++;
     }
@@ -65,11 +64,9 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index < 0) {
-            System.out.println("Error occurred while trying to get Resume with uuid: " +
-                    uuid + ", not presented");
-            return null;
-        }
+
+        if (index < 0)
+            throw new NotExistStorageException(uuid);
 
         return storage[index];
     }
@@ -77,11 +74,10 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index < 0) {
-            System.out.println("Error occurred while trying to delete Resume with uuid: " +
-                    uuid + ", not presented");
-            return;
-        }
+
+        if (index < 0)
+            throw new NotExistStorageException(uuid);
+
         fillDeletedElement(index);
         storage[size - 1] = null;
         size--;
