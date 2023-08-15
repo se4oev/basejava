@@ -25,9 +25,14 @@ public class MainReflection {
         Object o1 = field.get(resume);
         System.out.println(o1);
 
-        Method toString = resume.getClass().getDeclaredMethod("toString");
-        String str = (String) toString.invoke(resume);
-        System.out.println(str);
+        //первый вариант
+        Method toString1 = resume.getClass().getDeclaredMethod("toString");
+        String str1 = (String) toString1.invoke(resume);
+        System.out.println(str1);
+        //второй вариант
+        Method toString2 = resume.getClass().getMethod("toString");
+        String str2 = (String) toString2.invoke(resume);
+        System.out.println(str2);
     }
 
 }
