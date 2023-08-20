@@ -1,7 +1,5 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.ExistStorageException;
-import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
@@ -25,26 +23,16 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void update(Resume r) {
-        int index = getIndex(r.getUuid());
-
-        if (index < 0)
-            throw new NotExistStorageException(r.getUuid());
-
-        storage[index] = r;
+    protected void doUpdate(Resume r, Object index) {
+        storage[(Integer) index] = r;
     }
 
     @Override
-    public void save(Resume r) {
-        int index = getIndex(r.getUuid());
-
-        if (index >= 0)
-            throw new ExistStorageException(r.getUuid());
-
+    protected void doSave(Resume r, Object index) {
         if (size >= STORAGE_LIMIT)
             throw new StorageException("Storage overflow", r.getUuid());
 
-        insertElement(r, index);
+        insertElement(r, (Integer) index);
         size++;
     }
 
@@ -62,28 +50,23 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-
-        if (index < 0)
-            throw new NotExistStorageException(uuid);
-
-        return storage[index];
+    protected Resume doGet(Object index) {
+        return storage[(Integer) index];
     }
 
     @Override
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-
-        if (index < 0)
-            throw new NotExistStorageException(uuid);
-
-        fillDeletedElement(index);
+    protected void doDelete(Object index) {
+        fillDeletedElement((Integer) index);
         storage[size - 1] = null;
         size--;
     }
 
-    protected abstract int getIndex(String uuid);
+    @Override
+    protected boolean exist(Object index) {
+        return (Integer) index >= 0;
+    }
+
+    protected abstract Integer getSearchKey(String uuid);
 
     protected abstract void insertElement(Resume r, int index);
 
