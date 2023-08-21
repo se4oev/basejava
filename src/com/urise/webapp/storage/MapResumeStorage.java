@@ -11,38 +11,38 @@ import java.util.Map;
  * Created by karpenko on 15.08.2023.
  * Description:
  */
-public class MapStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage {
 
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    protected String getSearchKey(String uuid) {
-        return uuid;
+    protected Resume getSearchKey(String uuid) {
+        return storage.get(uuid);
     }
 
     @Override
-    protected boolean exist(Object searchKey) {
-        return storage.get((String) searchKey) != null;
+    protected boolean exist(Object resume) {
+        return resume != null;
     }
 
     @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        storage.put((String) searchKey, r);
+    protected void doUpdate(Resume r, Object resume) {
+        storage.put(r.getUuid(), r);
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
-        storage.put((String) searchKey, r);
+    protected void doSave(Resume r, Object resume) {
+        storage.put(r.getUuid(), r);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        storage.remove((String) searchKey);
+    protected void doDelete(Object resume) {
+        storage.remove(((Resume) resume).getUuid());
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return storage.get((String) searchKey);
+    protected Resume doGet(Object resume) {
+        return (Resume) resume;
     }
 
     @Override
