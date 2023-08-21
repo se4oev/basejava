@@ -18,11 +18,11 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
         int storageLimit = AbstractArrayStorage.STORAGE_LIMIT;
         try {
             for (int i = size; i <= storageLimit; i++)
-                storage.save(new Resume());
+                storage.save(new Resume("Name" + i));
         } catch (StorageException ignored) {
             fail("Overflow unexpected!");
         }
-        storage.save(new Resume());
+        storage.save(new Resume("Overflow"));
     }
 
 }
