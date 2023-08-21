@@ -16,11 +16,11 @@ public class MapStorageTest extends AbstractStorageTest {
     @Test
     public void getAll() {
         //TODO: ?
-        Resume[] fromStorage = getStorage().getAll();
+        Resume[] fromStorage = storage.getAll();
         assertEquals(3, fromStorage.length);
-        assertNotNull(getStorage().get("uuid1"));
-        assertNotNull(getStorage().get("uuid2"));
-        assertNotNull(getStorage().get("uuid3"));
+        assertNotNull(storage.get("uuid1"));
+        assertNotNull(storage.get("uuid2"));
+        assertNotNull(storage.get("uuid3"));
     }
 
 }

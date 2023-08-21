@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
 
-    private final Storage storage;
+    protected final Storage storage;
 
     private static final String UUID_1 = "uuid1";
     private static final Resume RESUME_1;
@@ -118,10 +118,6 @@ public abstract class AbstractStorageTest {
 
     private void assertSize(int expected) {
         assertEquals(expected, storage.size());
-    }
-
-    protected Storage getStorage() {
-        return storage;
     }
 
 }
