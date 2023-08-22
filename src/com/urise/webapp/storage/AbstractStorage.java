@@ -11,41 +11,41 @@ import java.util.List;
  * Created by karpenko on 15.08.2023.
  * Description:
  */
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<K> implements Storage {
 
     @Override
     public void update(Resume r) {
-        Object searchKey = getExistedSearchKey(r.getUuid());
+        K searchKey = getExistedSearchKey(r.getUuid());
         doUpdate(r, searchKey);
     }
 
     @Override
     public void save(Resume r) {
-        Object searchKey = getNotExistedSearchKey(r.getUuid());
+        K searchKey = getNotExistedSearchKey(r.getUuid());
         doSave(r, searchKey);
     }
 
     @Override
     public void delete(String uuid) {
-        Object searchKey = getExistedSearchKey(uuid);
+        K searchKey = getExistedSearchKey(uuid);
         doDelete(searchKey);
     }
 
     @Override
     public Resume get(String uuid) {
-        Object searchKey = getExistedSearchKey(uuid);
+        K searchKey = getExistedSearchKey(uuid);
         return doGet(searchKey);
     }
 
-    private Object getExistedSearchKey(String uuid) {
-        Object searchKey = getSearchKey(uuid);
+    private K getExistedSearchKey(String uuid) {
+        K searchKey = getSearchKey(uuid);
         if (!exist(searchKey))
             throw new NotExistStorageException(uuid);
         return searchKey;
     }
 
-    private Object getNotExistedSearchKey(String uuid) {
-        Object searchKey = getSearchKey(uuid);
+    private K getNotExistedSearchKey(String uuid) {
+        K searchKey = getSearchKey(uuid);
         if (exist(searchKey))
             throw new ExistStorageException(uuid);
         return searchKey;
@@ -58,17 +58,17 @@ public abstract class AbstractStorage implements Storage {
         return list;
     }
 
-    protected abstract Object getSearchKey(String uuid);
+    protected abstract K getSearchKey(String uuid);
 
-    protected abstract boolean exist(Object searchKey);
+    protected abstract boolean exist(K searchKey);
 
-    protected abstract void doUpdate(Resume r, Object searchKey);
+    protected abstract void doUpdate(Resume r, K searchKey);
 
-    protected abstract void doSave(Resume r, Object searchKey);
+    protected abstract void doSave(Resume r, K searchKey);
 
-    protected abstract void doDelete(Object searchKey);
+    protected abstract void doDelete(K searchKey);
 
-    protected abstract Resume doGet(Object searchKey);
+    protected abstract Resume doGet(K searchKey);
 
     protected abstract List<Resume> doCopyAll();
 

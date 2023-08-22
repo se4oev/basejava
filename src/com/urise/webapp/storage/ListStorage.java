@@ -9,7 +9,7 @@ import java.util.List;
  * Created by karpenko on 15.08.2023.
  * Description:
  */
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
 
     private final List<Resume> storage = new ArrayList<>();
 
@@ -19,23 +19,23 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(Resume r, Object index) {
-        storage.set((int) index, r);
+    protected void doUpdate(Resume r, Integer index) {
+        storage.set(index, r);
     }
 
     @Override
-    protected void doSave(Resume r, Object index) {
+    protected void doSave(Resume r, Integer index) {
         storage.add(r);
     }
 
     @Override
-    protected Resume doGet(Object index) {
-        return storage.get((int) index);
+    protected Resume doGet(Integer index) {
+        return storage.get(index);
     }
 
     @Override
-    protected void doDelete(Object index) {
-        storage.remove((int) index);
+    protected void doDelete(Integer index) {
+        storage.remove(index.intValue());
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean exist(Object searchKey) {
+    protected boolean exist(Integer searchKey) {
         return searchKey != null;
     }
 
